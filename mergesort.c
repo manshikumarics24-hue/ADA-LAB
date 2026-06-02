@@ -1,61 +1,63 @@
 #include<stdio.h>
-#include<stdlib.h>
-#include<time.h>
+#define max 100
 
-void merge(int a[],int low,int mid,int high){
-    int i=low,j=mid+1,k=low;
-    int temp[100000];
+void merge(int array[max],int low,int high,int mid){
+int temp[max];
 
-    while(i<=mid && j<=high){
-        if(a[i]<=a[j])
-            temp[k++]=a[i++];
-        else
-            temp[k++]=a[j++];
-    }
-
-    while(i<=mid)
-        temp[k++]=a[i++];
-
-    while(j<=high)
-        temp[k++]=a[j++];
-
-    for(i=low;i<=high;i++)
-        a[i]=temp[i];
+int i=low;
+int j=mid+1;
+int k=low;
+while(i<j&&j<=high){
+if(array[i]<array[j]){
+temp[k]=array[i];
+i++;
+}else{
+    temp[k]=array[j];
+     j++;
+}
+k++;
 }
 
-void mergesort(int a[],int low,int high){
-    int mid;
+while(i<=mid){
+    temp[k]=array[i];
+    i++;
+    k++;
+}while(j<=high)
+{
+    temp[k]=array[j];
+    j++;
+    k++;
+
+}for(int i=low;i<=high;i++){
+    array[i]=temp[i];
+}
+}
+
+void mergesort(int array[max],int low,int high){
     if(low<high){
-        mid=(low+high)/2;
-        mergesort(a,low,mid);
-        mergesort(a,mid+1,high);
-        merge(a,low,mid,high);
-    }
+    int mid=(low+high)/2;
+     mergesort(array,low,mid);
+     mergesort(array,mid+1,high);
+     merge(array,low,high,mid);
 }
+}
+
+
 
 int main(){
-    int n;
-    int a[100000];
-    clock_t start,end;
-
-    printf("Enter no. of elements: ");
+    int array[max];
+     int n;
+    
+    printf("enter number:");
     scanf("%d",&n);
-
-    if(n>100000){
-        printf("Too many elements\n");
-        return 0;
+    array[n];
+    for(int i=0;i<n;i++){
+        scanf("%d",&array[i]);
     }
-
-    for(int i=0;i<n;i++)
-        a[i]=rand()%1000;
-
-    start=clock();
-    mergesort(a,0,n-1);
-    end=clock();
-
-    double time_taken=(double)(end-start)*1000/CLOCKS_PER_SEC;
-
-    printf("Time taken to sort %d elements = %f seconds\n",n,time_taken);
-
-    return 0;
+    mergesort(array,0,n-1);
+    printf("sorted arrray:");
+    for(int i=0;i<n;i++){
+      printf("%d\t",array[i]);
+    }
+    
 }

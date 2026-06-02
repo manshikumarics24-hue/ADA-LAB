@@ -1,56 +1,51 @@
-#include <stdio.h>
-#include <time.h>
-void swap(int *a, int *b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
-}
-int partition(int arr[], int low, int high) {
-    int pivot = arr[high];               
-    int i = low - 1;
+#include<stdio.h>
+#define max 100;e4
 
-    for (int j = low; j < high; j++) {
-        if (arr[j] < pivot) {
+int partition(int array[100],int low,int high){
+    int pivot = array[low];
+    int i = low ;
+    int j = high;
+    while(i<=j){
+        while(array[i]<=pivot){
             i++;
-            swap(&arr[i], &arr[j]);
         }
+        while(array[j]>pivot){
+        j--;
+       }
+       if(i<j){
+        int temp=array[i];
+        array[i]=array[j];
+        array[j]=temp;
+       }
+       else{
+        array[low]=array[j];
+        array[j]=pivot;
+       }
     }
-    swap(&arr[i + 1], &arr[high]);
-    return i + 1;
+    return j;
+    
 }
-void quickSort(int arr[], int low, int high) {
-    if (low < high) {
-        int pi = partition(arr, low, high);
 
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
+void quicksort(int array[100],int low,int high){
+    if(low<high){
+        int j = partition(array,low,high);
+        quicksort(array,low,j-1);
+        quicksort(array,j+1,high);
     }
 }
-int main() {
-    int n, i;
-    printf("Enter number of elements: ");
-    scanf("%d", &n);
+int main(){
+    int array[100];
+    int n;
+    printf("enter no of elements:");
+    scanf("%d",&n);
+    for(int i=0;i<n;i++){
+        scanf("%d",&array[i]);
 
-    int arr[n];
-    printf("Enter %d elements:\n", n);
-    for (i = 0; i < n; i++) {
-        scanf("%d", &arr[i]);
+    }
+    quicksort(array,0,n-1);
+    printf("sorted array:");
+    for(int i=0;i<n;i++){
+        printf("%d\t",array[i]);
     }
 
-    clock_t start, end;
-    start = clock();
-
-    quickSort(arr, 0, n - 1);
-
-    end = clock();
-
-    printf("Sorted array:\n");
-    for (i = 0; i < n; i++) {
-        printf("%d ", arr[i]);
-    }
-
-    double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
-    printf("\nTime taken: %f seconds\n", time_taken);
-
-    return 0;
 }
